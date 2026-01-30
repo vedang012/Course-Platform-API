@@ -1,4 +1,4 @@
-package com.vedang.course.platform.api.model;
+package com.vedang.courseapi.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

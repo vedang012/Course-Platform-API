@@ -1,4 +1,4 @@
-package com.vedang.course.platform.api.model;
+package com.vedang.courseapi.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,14 +9,15 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Enrollment {
+public class Subtopic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private User user;
+    private String title;
+    private String content;
 
     @ManyToOne
-    private Course course;
+    @JoinColumn(name = "topic_id", nullable = false)
+    private Topic topic;
 }

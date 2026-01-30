@@ -1,4 +1,4 @@
-package com.vedang.course.platform.api;
+package com.vedang.courseapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

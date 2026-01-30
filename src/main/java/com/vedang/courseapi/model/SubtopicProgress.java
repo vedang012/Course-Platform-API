@@ -1,8 +1,7 @@
-package com.vedang.course.platform.api.model;
+package com.vedang.courseapi.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties;
 
 import java.util.Date;
 
