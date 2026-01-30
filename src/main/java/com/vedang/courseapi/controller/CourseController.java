@@ -1,15 +1,19 @@
 package com.vedang.courseapi.controller;
 
-import com.vedang.courseapi.dto.CourseRequest;
-import com.vedang.courseapi.dto.SubtopicRequest;
-import com.vedang.courseapi.dto.TopicRequest;
+import com.vedang.courseapi.dto.*;
+import com.vedang.courseapi.model.Course;
+import com.vedang.courseapi.model.Subtopic;
+import com.vedang.courseapi.model.Topic;
 import com.vedang.courseapi.service.CourseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/course")
+@RequestMapping("/api/courses")
 @RequiredArgsConstructor
 public class CourseController {
 
@@ -33,4 +37,18 @@ public class CourseController {
         courseService.createSubtopic(subtopicRequest, topicId);
     }
 
+    @GetMapping("/")
+    public Page<CourseResponse> courses(@PageableDefault(size = 10, sort = "title") Pageable pageable) {
+        return courseService.getAllCourses(pageable);
+    }
+
+    @GetMapping("/{courseId}/topics")
+    public Page<TopicResponse> topics(@PageableDefault(size = 10, sort = "id") Pageable pageable, @PathVariable Long courseId) {
+        return courseService.getTopics(pageable, courseId);
+    }
+
+    @GetMapping("/topics/{topicId}/subtopics")
+    public Page<SubtopicResponse> subtopics(@PageableDefault(size = 10, sort = "id") Pageable pageable, @PathVariable Long topicId) {
+        return courseService.getSubtopics(pageable, topicId);
+    }
 }
