@@ -5,6 +5,4 @@ public record SubtopicResponse(
         Long topicId,
         String title,
         String content
-) {
-
-}
+) {}

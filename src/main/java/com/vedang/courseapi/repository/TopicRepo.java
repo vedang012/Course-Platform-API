@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TopicRepo extends JpaRepository<Topic, Long> {
     Page<Topic> findAllByCourseId(Long courseId, Pageable pageable);
+
+    int countByCourseId(Long courseId);
 }
