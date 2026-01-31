@@ -65,8 +65,24 @@ public class CourseService {
         return page.map(topic -> new TopicResponse(topic.getId(), topic.getTitle(), topic.getCourse().getId()));
     }
 
-    public Page<SubtopicResponse> getSubtopics(Pageable pageable, Long topicId) {
+    public Page<SubtopicSummaryResponse> getSubtopics(Pageable pageable, Long topicId) {
         Page<Subtopic> page = subtopicRepo.findAllByTopicId(topicId, pageable);
-        return page.map(subtopic -> new SubtopicResponse(subtopic.getId(), subtopic.getTopic().getId(), subtopic.getTitle(), subtopic.getContent()));
+        return page.map(subtopic -> new SubtopicSummaryResponse(subtopic.getId(), subtopic.getTopic().getId(), subtopic.getTitle()));
+    }
+
+    public CourseResponse getCourseById(Long courseId) {
+        Course course = courseRepo.findById(courseId).orElseThrow();
+        return new CourseResponse(course.getId(), course.getTitle(), course.getDescription());
+    }
+
+    public TopicResponse getTopicById(Long topicId) {
+        Topic topic = topicRepo.findById(topicId).orElseThrow();
+        return new TopicResponse(topic.getId(), topic.getTitle(), topic.getCourse().getId());
+    }
+
+
+    public SubtopicResponse getSubtopicById(Long subtopicId) {
+        Subtopic subtopic = subtopicRepo.findById(subtopicId).orElseThrow();
+        return new SubtopicResponse(subtopic.getId(), subtopic.getTopic().getId(), subtopic.getTitle(), subtopic.getContent());
     }
 }

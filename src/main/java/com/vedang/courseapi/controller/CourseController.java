@@ -42,13 +42,29 @@ public class CourseController {
         return courseService.getAllCourses(pageable);
     }
 
+    @GetMapping("/{courseId}")
+    public CourseResponse getCourseById(@PathVariable Long courseId) {
+        return courseService.getCourseById(courseId);
+    }
+
     @GetMapping("/{courseId}/topics")
     public Page<TopicResponse> topics(@PageableDefault(size = 10, sort = "id") Pageable pageable, @PathVariable Long courseId) {
         return courseService.getTopics(pageable, courseId);
     }
 
+    @GetMapping("/topics/{topicId}")
+    public TopicResponse getTopicById(@PathVariable Long topicId) {
+        return courseService.getTopicById(topicId);
+    }
+
     @GetMapping("/topics/{topicId}/subtopics")
-    public Page<SubtopicResponse> subtopics(@PageableDefault(size = 10, sort = "id") Pageable pageable, @PathVariable Long topicId) {
+    public Page<SubtopicSummaryResponse> subtopics(@PageableDefault(size = 10, sort = "id") Pageable pageable, @PathVariable Long topicId) {
         return courseService.getSubtopics(pageable, topicId);
     }
+
+    @GetMapping("subtopics/{subtopicId}")
+    public SubtopicResponse getSubtopicById(@PathVariable Long subtopicId) {
+        return courseService.getSubtopicById(subtopicId);
+    }
+
 }
