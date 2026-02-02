@@ -2,7 +2,9 @@ package com.vedang.courseapi.filter;
 
 import com.vedang.courseapi.model.User;
 import com.vedang.courseapi.repository.UserRepo;
+import com.vedang.courseapi.service.CustomUserDetails;
 import com.vedang.courseapi.service.JWTService;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,10 +51,25 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
+        CustomUserDetails userDetails = new CustomUserDetails(user);
+
+        System.out.println(userDetails.getAuthorities());
+        System.out.println(user.getRole());
+
         UsernamePasswordAuthenticationToken auth =
-                new UsernamePasswordAuthenticationToken(user, null, List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())));
+                new UsernamePasswordAuthenticationToken(userDetails, null, List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())));
 
         SecurityContextHolder.getContext().setAuthentication(auth);
+
+        System.out.println("AUTH IN CONTEXT: " +
+                SecurityContextHolder.getContext().getAuthentication());
+
         filterChain.doFilter(request, response);
     }
+
+    @PostConstruct
+    public void init() {
+        System.out.println("JWTFilter bean created");
+    }
+
 }

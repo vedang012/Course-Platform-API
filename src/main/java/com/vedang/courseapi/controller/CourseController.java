@@ -5,6 +5,7 @@ import com.vedang.courseapi.model.Course;
 import com.vedang.courseapi.model.Subtopic;
 import com.vedang.courseapi.model.Topic;
 import com.vedang.courseapi.service.CourseService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ public class CourseController {
     private final CourseService courseService;
 
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/")
     public void createCourse(@RequestBody CourseRequest courseRequest) {
         courseService.createCourse(courseRequest);
@@ -32,6 +34,7 @@ public class CourseController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/topics/{topicId}/subtopics")
     public void createSubtopic(@RequestBody SubtopicRequest subtopicRequest, @PathVariable Long topicId) {
         courseService.createSubtopic(subtopicRequest, topicId);

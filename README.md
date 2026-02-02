@@ -7,6 +7,4 @@
 - JPA / Hibernate
 - Spring Security (JWT)
 - Swagger / OpenAPI
-- Public deployment with Swagger UI (mandatory)
-
-
+- Public deployment with Swagger UI
