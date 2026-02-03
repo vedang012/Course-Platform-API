@@ -53,8 +53,6 @@ public class JWTService {
 
     public boolean isTokenValid(String token, User user) {
         try {
-            Claims claims = extractClaims(token);
-
             String email = getUsername(token);
             Date expiration = extractExpiration(token);
 

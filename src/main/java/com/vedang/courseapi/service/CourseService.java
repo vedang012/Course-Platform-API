@@ -1,12 +1,8 @@
 package com.vedang.courseapi.service;
 
 import com.vedang.courseapi.dto.*;
-import com.vedang.courseapi.model.Course;
-import com.vedang.courseapi.model.Subtopic;
-import com.vedang.courseapi.model.Topic;
-import com.vedang.courseapi.repository.CourseRepo;
-import com.vedang.courseapi.repository.SubtopicRepo;
-import com.vedang.courseapi.repository.TopicRepo;
+import com.vedang.courseapi.model.*;
+import com.vedang.courseapi.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +16,8 @@ public class CourseService {
     private final CourseRepo courseRepo;
     private final TopicRepo topicRepo;
     private final SubtopicRepo subtopicRepo;
+    private final UserRepo userRepo;
+    private final EnrollmentRepo enrollmentRepo;
 
     public void createCourse(@RequestBody CourseRequest courseRequest) {
         Course course = Course.builder()
@@ -41,11 +39,13 @@ public class CourseService {
     }
 
     public void createSubtopic(SubtopicRequest subtopicRequest, Long topicId) {
+
         Topic topic = topicRepo.findById(topicId).orElseThrow();
 
         Subtopic subtopic = Subtopic.builder()
                 .title(subtopicRequest.title())
                 .content(subtopicRequest.content())
+                .topic(topic)
                 .build();
 
         subtopicRepo.save(subtopic);
@@ -82,5 +82,16 @@ public class CourseService {
     public SubtopicResponse getSubtopicById(Long subtopicId) {
         Subtopic subtopic = subtopicRepo.findById(subtopicId).orElseThrow();
         return new SubtopicResponse(subtopic.getId(), subtopic.getTopic().getId(), subtopic.getTitle(), subtopic.getContent());
+    }
+
+    public EnrollmentResponse enroll(Long courseId, Long userid) {
+        User user = userRepo.findById(userid).orElseThrow();
+        Course course = courseRepo.findById(courseId).orElseThrow();
+        Enrollment enrollment = Enrollment.builder()
+                .course(course)
+                .user(user)
+                .build();
+        enrollmentRepo.save(enrollment);
+        return new EnrollmentResponse(user.getId(), course.getId(), "Enrolled Successfully");
     }
 }
