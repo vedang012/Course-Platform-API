@@ -3,6 +3,8 @@ package com.vedang.courseapi.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -20,4 +22,13 @@ public class Topic {
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
+
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Subtopic> subtopics;
+
+    public void addSubtopic(Subtopic subtopic) {
+        subtopics.add(subtopic);
+        subtopic.setTopic(this);
+    }
+
 }

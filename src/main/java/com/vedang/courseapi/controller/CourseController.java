@@ -1,7 +1,6 @@
 package com.vedang.courseapi.controller;
 
 import com.vedang.courseapi.dto.*;
-import com.vedang.courseapi.model.User;
 import com.vedang.courseapi.repository.CourseRepo;
 import com.vedang.courseapi.service.CourseService;
 import com.vedang.courseapi.service.CustomUserDetails;

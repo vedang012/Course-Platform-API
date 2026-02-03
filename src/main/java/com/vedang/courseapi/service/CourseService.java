@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +18,7 @@ public class CourseService {
     private final UserRepo userRepo;
     private final EnrollmentRepo enrollmentRepo;
 
-    public void createCourse(@RequestBody CourseRequest courseRequest) {
+    public void createCourse(CourseRequest courseRequest) {
         Course course = Course.builder()
                 .title(courseRequest.title())
                 .description(courseRequest.description())
@@ -32,9 +31,9 @@ public class CourseService {
         Course course = courseRepo.findById(courseId).orElseThrow();
         Topic topic = Topic.builder()
                 .title(topicRequest.title())
-                .course(course)
                 .build();
 
+        course.addTopic(topic);
         topicRepo.save(topic);
     }
 
@@ -45,9 +44,9 @@ public class CourseService {
         Subtopic subtopic = Subtopic.builder()
                 .title(subtopicRequest.title())
                 .content(subtopicRequest.content())
-                .topic(topic)
                 .build();
 
+        topic.addSubtopic(subtopic);
         subtopicRepo.save(subtopic);
     }
 

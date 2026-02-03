@@ -3,6 +3,8 @@ package com.vedang.courseapi.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 
 @Entity
 @Getter
@@ -20,4 +22,13 @@ public class Course {
 
     @Column(nullable = false)
     private String description;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Topic> topics;
+
+    public void addTopic(Topic topic) {
+        topics.add(topic);
+        topic.setCourse(this);
+    }
+
 }
