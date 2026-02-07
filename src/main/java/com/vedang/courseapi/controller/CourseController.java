@@ -1,7 +1,6 @@
 package com.vedang.courseapi.controller;
 
 import com.vedang.courseapi.dto.*;
-import com.vedang.courseapi.repository.CourseRepo;
 import com.vedang.courseapi.service.CourseService;
 import com.vedang.courseapi.service.CustomUserDetails;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -9,9 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.*; 
 
 @RestController
 @RequestMapping("/api/courses")
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 public class CourseController {
 
     private final CourseService courseService;
-    private final CourseRepo courseRepo;
 
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "bearerAuth")
@@ -75,6 +74,11 @@ public class CourseController {
     @PostMapping("/{courseId}/enroll")
     public EnrollmentResponse enroll(@PathVariable Long courseId, @AuthenticationPrincipal CustomUserDetails user) {
         return courseService.enroll(courseId, user.getId());
+    }
+
+    @PostMapping("/subtopics/{subtopicId}/progress")
+    public ResponseEntity<?> markAsCompleted(@PathVariable Long subtopicId, @AuthenticationPrincipal CustomUserDetails user) {
+        return courseService.markAsCompleted(subtopicId, user.getId());
     }
 
 }

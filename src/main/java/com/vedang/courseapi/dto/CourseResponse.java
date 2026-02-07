@@ -3,5 +3,7 @@ package com.vedang.courseapi.dto;
 public record CourseResponse(
         Long id,
         String title,
-        String description
+        String description,
+        int topicCount,
+        int subtopicCount
 ) {}

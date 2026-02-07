@@ -6,7 +6,10 @@ import com.vedang.courseapi.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +20,7 @@ public class CourseService {
     private final SubtopicRepo subtopicRepo;
     private final UserRepo userRepo;
     private final EnrollmentRepo enrollmentRepo;
+    private final SubtopicProgressRepo subtopicProgressRepo;
 
     public void createCourse(CourseRequest courseRequest) {
         Course course = Course.builder()
@@ -53,7 +57,11 @@ public class CourseService {
     public Page<CourseResponse> getAllCourses(Pageable pageable) {
         Page<Course> page = courseRepo.findAll(pageable);
 
-        return page.map(course -> new CourseResponse(course.getId(), course.getTitle(), course.getDescription()));
+        return page.map(course -> new CourseResponse(course.getId(), course.getTitle(), course.getDescription(), course.getTopics().size(), course.getTopics()
+                .stream()
+                .mapToInt(topic -> topic.getSubtopics().size())
+                .sum()
+));
 
     }
 
@@ -69,7 +77,12 @@ public class CourseService {
 
     public CourseResponse getCourseById(Long courseId) {
         Course course = courseRepo.findById(courseId).orElseThrow();
-        return new CourseResponse(course.getId(), course.getTitle(), course.getDescription());
+        int topicCount = course.getTopics().size();
+        int subtopicCount = course.getTopics()
+                .stream()
+                .mapToInt(topic -> topic.getSubtopics().size())
+                .sum();
+        return new CourseResponse(course.getId(), course.getTitle(), course.getDescription(), topicCount, subtopicCount);
     }
 
     public TopicResponse getTopicById(Long topicId) {
@@ -92,5 +105,16 @@ public class CourseService {
                 .build();
         enrollmentRepo.save(enrollment);
         return new EnrollmentResponse(user.getId(), course.getId(), "Enrolled Successfully");
+    }
+
+    public ResponseEntity<?> markAsCompleted(Long subtopicId, Long userId) {
+        SubtopicProgress subtopicProgress = SubtopicProgress.builder()
+                .user(userRepo.getReferenceById(userId))
+                .subtopic(subtopicRepo.getReferenceById(subtopicId))
+                .completedAt(new Date())
+                .build();
+
+        subtopicProgressRepo.save(subtopicProgress);
+        return ResponseEntity.ok("success");
     }
 }
