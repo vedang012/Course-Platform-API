@@ -3,6 +3,7 @@ package com.vedang.courseapi.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,7 +29,8 @@ public class Course {
 
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Topic> topics;
+    @Builder.Default
+    List<Topic> topics = new ArrayList<>();
 
     public void addTopic(Topic topic) {
         topics.add(topic);
