@@ -107,25 +107,78 @@ admin
 
 ## 9. Example API Endpoints
 
-### Get Courses
-```
-GET /api/courses
-```
+## API Endpoints
 
-### Search Courses
-```
-GET /api/courses/search?query=physics
-```
+Base URL:
+http://localhost:8080
 
-### Enroll in Course
-```
-POST /api/enrollments
-```
 
-### Mark Subtopic Complete
-```
-POST /api/progress/{subtopicId}
-```
+Swagger OpenAPI Docs:
+/v3/api-docs
+
+
+---
+
+### Course Controller
+
+#### Create Topic in Course
+POST /api/courses/{id}/topics
+
+
+#### Enroll in Course
+POST /api/courses/{courseId}/enroll
+
+
+#### Get Subtopics of a Topic
+GET /api/courses/topics/{topicId}/subtopics
+
+
+#### Create Subtopic in Topic
+POST /api/courses/topics/{topicId}/subtopics
+
+
+#### Mark Subtopic as Completed
+POST /api/courses/subtopics/{subtopicId}/progress
+
+
+#### Get All Courses
+GET /api/courses/
+
+
+#### Create Course
+POST /api/courses/
+
+
+#### Get Course by ID
+GET /api/courses/{courseId}
+
+
+#### Get Topics of a Course
+GET /api/courses/{courseId}/topics
+
+
+#### Get Topic by ID
+GET /api/courses/topics/{topicId}
+
+
+#### Get Subtopic by ID
+GET /api/courses/subtopics/{subtopicId}
+
+
+#### Search Courses
+GET /api/courses/search?query=your_search_text
+
+
+---
+
+### Auth Controller
+
+#### Register User
+POST /api/auth/register
+
+
+#### Login User
+POST /api/auth/login
 
 ---
 
