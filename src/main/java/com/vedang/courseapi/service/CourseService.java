@@ -57,7 +57,7 @@ public class CourseService {
     public Page<CourseResponse> getAllCourses(Pageable pageable) {
         Page<Course> page = courseRepo.findAll(pageable);
 
-        return page.map(course -> new CourseResponse(course.getId(), course.getTitle(), course.getDescription(), course.getTopics().size(), course.getTopics()
+        return page.map(course -> new CourseResponse(course.getId(), course.getSlug(), course.getTitle(), course.getDescription(), course.getTopics().size(), course.getTopics()
                 .stream()
                 .mapToInt(topic -> topic.getSubtopics().size())
                 .sum()
@@ -67,7 +67,7 @@ public class CourseService {
 
     public Page<TopicResponse> getTopics(Pageable pageable, Long courseId) {
         Page<Topic> page = topicRepo.findAllByCourseId(courseId, pageable);
-        return page.map(topic -> new TopicResponse(topic.getId(), topic.getTitle(), topic.getCourse().getId()));
+        return page.map(topic -> new TopicResponse(topic.getId(), topic.getSlug(), topic.getTitle(), topic.getCourse().getId()));
     }
 
     public Page<SubtopicSummaryResponse> getSubtopics(Pageable pageable, Long topicId) {
@@ -82,18 +82,18 @@ public class CourseService {
                 .stream()
                 .mapToInt(topic -> topic.getSubtopics().size())
                 .sum();
-        return new CourseResponse(course.getId(), course.getTitle(), course.getDescription(), topicCount, subtopicCount);
+        return new CourseResponse(course.getId(), course.getSlug(), course.getTitle(), course.getDescription(), topicCount, subtopicCount);
     }
 
     public TopicResponse getTopicById(Long topicId) {
         Topic topic = topicRepo.findById(topicId).orElseThrow();
-        return new TopicResponse(topic.getId(), topic.getTitle(), topic.getCourse().getId());
+        return new TopicResponse(topic.getId(), topic.getSlug(), topic.getTitle(), topic.getCourse().getId());
     }
 
 
     public SubtopicResponse getSubtopicById(Long subtopicId) {
         Subtopic subtopic = subtopicRepo.findById(subtopicId).orElseThrow();
-        return new SubtopicResponse(subtopic.getId(), subtopic.getTopic().getId(), subtopic.getTitle(), subtopic.getContent());
+        return new SubtopicResponse(subtopic.getId(), subtopic.getSlug(), subtopic.getTopic().getId(), subtopic.getTitle(), subtopic.getContent());
     }
 
     public EnrollmentResponse enroll(Long courseId, Long userid) {

@@ -23,6 +23,10 @@ public class Course {
     @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false, unique = true)
+    private String slug;
+
+
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Topic> topics;
 

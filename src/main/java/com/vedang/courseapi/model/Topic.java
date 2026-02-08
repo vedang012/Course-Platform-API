@@ -19,6 +19,9 @@ public class Topic {
     @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false, unique = true)
+    private String slug;
+
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
