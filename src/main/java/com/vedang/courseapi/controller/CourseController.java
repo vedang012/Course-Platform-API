@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +50,19 @@ public class CourseController {
                                             Pageable pageable) {
         return courseService.getAllCourses(pageable);
     }
+
+    @GetMapping("/search")
+    public Page<CourseResponse> searchCourses(
+            @RequestParam String query,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return courseService.searchCourses(query, pageable);
+    }
+
+
+
 
     @GetMapping("/{courseId}")
     public CourseResponse getCourseById(@PathVariable Long courseId) {

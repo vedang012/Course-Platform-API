@@ -117,4 +117,29 @@ public class CourseService {
         subtopicProgressRepo.save(subtopicProgress);
         return ResponseEntity.ok("success");
     }
+
+    public Page<CourseResponse> searchCourses(String query, Pageable pageable) {
+        return courseRepo.searchCourses(query, pageable)
+                .map(this::mapToResponse);
+    }
+
+    private CourseResponse mapToResponse(Course course) {
+        int topicCount = course.getTopics().size();
+        int subtopicCount = course.getTopics().stream()
+                .mapToInt(t -> t.getSubtopics().size())
+                .sum();
+
+        return new CourseResponse(
+                course.getId(),
+                course.getSlug(),
+                course.getTitle(),
+                course.getDescription(),
+                topicCount,
+                subtopicCount
+        );
+    }
+
+
+
 }
+
