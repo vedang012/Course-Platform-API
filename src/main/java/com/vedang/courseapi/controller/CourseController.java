@@ -3,8 +3,10 @@ package com.vedang.courseapi.controller;
 import com.vedang.courseapi.dto.*;
 import com.vedang.courseapi.service.CourseService;
 import com.vedang.courseapi.service.CustomUserDetails;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -41,7 +43,10 @@ public class CourseController {
     }
 
     @GetMapping("/")
-    public Page<CourseResponse> courses(@PageableDefault(size = 10, sort = "title") Pageable pageable) {
+    public Page<CourseResponse> courses(@PageableDefault(size = 10, sort = "id")
+                                            @ParameterObject
+                                            @Parameter(hidden = true, name = "sort")
+                                            Pageable pageable) {
         return courseService.getAllCourses(pageable);
     }
 
@@ -51,7 +56,9 @@ public class CourseController {
     }
 
     @GetMapping("/{courseId}/topics")
-    public Page<TopicResponse> topics(@PageableDefault(size = 10, sort = "id") Pageable pageable, @PathVariable Long courseId) {
+    public Page<TopicResponse> topics(@PageableDefault(size = 10, sort = "id")                                             @ParameterObject
+                                          @Parameter(hidden = true, name = "sort")
+                                          Pageable pageable, @PathVariable Long courseId) {
         return courseService.getTopics(pageable, courseId);
     }
 
@@ -61,7 +68,9 @@ public class CourseController {
     }
 
     @GetMapping("/topics/{topicId}/subtopics")
-    public Page<SubtopicSummaryResponse> subtopics(@PageableDefault(size = 10, sort = "id") Pageable pageable, @PathVariable Long topicId) {
+    public Page<SubtopicSummaryResponse> subtopics(@PageableDefault(size = 10, sort = "id")                                             @ParameterObject
+                                                       @Parameter(hidden = true, name = "sort")
+                                                       Pageable pageable, @PathVariable Long topicId) {
         return courseService.getSubtopics(pageable, topicId);
     }
 
