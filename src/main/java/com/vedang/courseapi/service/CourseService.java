@@ -26,6 +26,7 @@ public class CourseService {
         Course course = Course.builder()
                 .title(courseRequest.title())
                 .description(courseRequest.description())
+                .slug(courseRequest.slug())
                 .build();
 
         courseRepo.save(course);
@@ -35,6 +36,7 @@ public class CourseService {
         Course course = courseRepo.findById(courseId).orElseThrow();
         Topic topic = Topic.builder()
                 .title(topicRequest.title())
+                .slug(topicRequest.slug())
                 .build();
 
         course.addTopic(topic);
@@ -48,6 +50,7 @@ public class CourseService {
         Subtopic subtopic = Subtopic.builder()
                 .title(subtopicRequest.title())
                 .content(subtopicRequest.content())
+                .slug(subtopicRequest.slug())
                 .build();
 
         topic.addSubtopic(subtopic);

@@ -17,7 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*; 
 
 @RestController
-@RequestMapping("/api/courses")
+@RequestMapping({"/api/courses", "/api/courses/"})
 @RequiredArgsConstructor
 public class CourseController {
 
@@ -25,25 +25,25 @@ public class CourseController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "bearerAuth")
-    @PostMapping("/")
+    @PostMapping({"", "/"})
     public void createCourse(@RequestBody CourseRequest courseRequest) {
         courseService.createCourse(courseRequest);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/{id}/topics")
+    @PostMapping({"/{id}/topics", "/{id}/topics/"})
     public void createTopic(@RequestBody TopicRequest topicRequest, @PathVariable(name = "id") Long courseId) {
         courseService.createTopic(topicRequest, courseId);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "bearerAuth")
-    @PostMapping("/topics/{topicId}/subtopics")
+    @PostMapping({"/topics/{topicId}/subtopics", "/topics/{topicId}/subtopics/"})
     public void createSubtopic(@RequestBody SubtopicRequest subtopicRequest, @PathVariable Long topicId) {
         courseService.createSubtopic(subtopicRequest, topicId);
     }
 
-    @GetMapping("/")
+    @GetMapping({"", "/"})
     public Page<CourseResponse> courses(@PageableDefault(size = 10, sort = "id")
                                             @ParameterObject
                                             @Parameter(hidden = true, name = "sort")
@@ -51,7 +51,7 @@ public class CourseController {
         return courseService.getAllCourses(pageable);
     }
 
-    @GetMapping("/search")
+    @GetMapping({"/search", "/search/"})
     public Page<CourseResponse> searchCourses(
             @RequestParam String query,
             @RequestParam(defaultValue = "0") int page,
@@ -64,42 +64,42 @@ public class CourseController {
 
 
 
-    @GetMapping("/{courseId}")
+    @GetMapping({"/{courseId}", "/{courseId}/"})
     public CourseResponse getCourseById(@PathVariable Long courseId) {
         return courseService.getCourseById(courseId);
     }
 
-    @GetMapping("/{courseId}/topics")
+    @GetMapping({"/{courseId}/topics", "/{courseId}/topics/"})
     public Page<TopicResponse> topics(@PageableDefault(size = 10, sort = "id")                                             @ParameterObject
                                           @Parameter(hidden = true, name = "sort")
                                           Pageable pageable, @PathVariable Long courseId) {
         return courseService.getTopics(pageable, courseId);
     }
 
-    @GetMapping("/topics/{topicId}")
+    @GetMapping({"/topics/{topicId}", "/topics/{topicId}/"})
     public TopicResponse getTopicById(@PathVariable Long topicId) {
         return courseService.getTopicById(topicId);
     }
 
-    @GetMapping("/topics/{topicId}/subtopics")
+    @GetMapping({"/topics/{topicId}/subtopics", "/topics/{topicId}/subtopics/"})
     public Page<SubtopicSummaryResponse> subtopics(@PageableDefault(size = 10, sort = "id")                                             @ParameterObject
                                                        @Parameter(hidden = true, name = "sort")
                                                        Pageable pageable, @PathVariable Long topicId) {
         return courseService.getSubtopics(pageable, topicId);
     }
 
-    @GetMapping("subtopics/{subtopicId}")
+    @GetMapping({"/subtopics/{subtopicId}", "/subtopics/{subtopicId}/"})
     public SubtopicResponse getSubtopicById(@PathVariable Long subtopicId) {
         return courseService.getSubtopicById(subtopicId);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/{courseId}/enroll")
+    @PostMapping({"/{courseId}/enroll", "/{courseId}/enroll/"})
     public EnrollmentResponse enroll(@PathVariable Long courseId, @AuthenticationPrincipal CustomUserDetails user) {
         return courseService.enroll(courseId, user.getId());
     }
 
-    @PostMapping("/subtopics/{subtopicId}/progress")
+    @PostMapping({"/subtopics/{subtopicId}/progress", "/subtopics/{subtopicId}/progress/"})
     public ResponseEntity<?> markAsCompleted(@PathVariable Long subtopicId, @AuthenticationPrincipal CustomUserDetails user) {
         return courseService.markAsCompleted(subtopicId, user.getId());
     }

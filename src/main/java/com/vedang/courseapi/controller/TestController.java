@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @SecurityRequirement(name = "bearerAuth")
 public class TestController {
-    @GetMapping("/test")
+    @GetMapping({"/test", "/test/"})
     public String test() {
         return "hi";
     }

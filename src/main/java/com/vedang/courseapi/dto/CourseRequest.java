@@ -4,5 +4,6 @@ import lombok.NonNull;
 
 public record CourseRequest (
         @NonNull String title,
-        @NonNull String description
+        @NonNull String description,
+        @NonNull String slug
 ) {}
